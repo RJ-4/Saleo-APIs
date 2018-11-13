@@ -2,6 +2,7 @@ package com.nagarro.java.training.saleo.services;
 
 import java.util.List;
 
+import com.nagarro.java.training.saleo.models.Order;
 import com.nagarro.java.training.saleo.models.Product;
 
 public interface ProductService {
@@ -13,4 +14,6 @@ public interface ProductService {
 	public Product addNewProduct(Product newProduct);
 	
 	public Product updateProduct(Product updatedProduct, int productCode);
+	
+	public void updateProductStock(Order newOrder, int productCode);
 }

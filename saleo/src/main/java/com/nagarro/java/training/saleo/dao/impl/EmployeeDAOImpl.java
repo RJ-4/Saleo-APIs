@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.nagarro.java.training.saleo.dao.EmployeeDAO;
 import com.nagarro.java.training.saleo.models.Employee;
+
 import static com.nagarro.java.training.saleo.constants.Constants.*;
 
 @Repository
@@ -50,6 +51,18 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		Employee currentEmployee = (Employee) query.getSingleResult();
 		
 		return currentEmployee;
+	}
+
+	@Override
+	public void updateCashDrawer(double productPrice, int employeeId) {
+
+		Session session = factory.getCurrentSession();
+		
+		Employee currentEmployee = session.get(Employee.class, employeeId);
+
+		double currentCashDrawer = currentEmployee.getEmployeeCashDrawer();
+		
+		currentEmployee.setEmployeeCashDrawer(currentCashDrawer + productPrice);
 	}
 
 }

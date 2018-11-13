@@ -76,4 +76,16 @@ public class ProductDAOImpl implements ProductDAO {
 		return updatedProduct;
 	}
 
+	@Override
+	public void updateProductStock(int orderedItemQuantity, int productCode) {
+
+		Session session = factory.getCurrentSession();
+		
+		Product currentProduct = session.get(Product.class, productCode);
+		
+		int currentProductStock = currentProduct.getProductStock();
+		
+		currentProduct.setProductStock(currentProductStock - orderedItemQuantity);
+	}
+
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nagarro.java.training.saleo.dao.ProductDAO;
+import com.nagarro.java.training.saleo.models.Order;
 import com.nagarro.java.training.saleo.models.Product;
 import com.nagarro.java.training.saleo.services.ProductService;
 
@@ -49,6 +50,15 @@ public class ProductServiceImpl implements ProductService {
 		updatedExistingProduct.setProductCode(productCode);
 		
 		return updatedExistingProduct;
+	}
+
+	@Override
+	@Transactional
+	public void updateProductStock(Order newOrder, int productCode) {
+
+		int orderedProductQuantity = newOrder.getProductQuantity();
+		
+		productDAO.updateProductStock(orderedProductQuantity, productCode);
 	}
 
 }

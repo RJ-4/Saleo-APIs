@@ -33,4 +33,12 @@ public class Constants {
 														+ "productStock = :productStock, "
 														+ "productUnitPrice = :productUnitPrice "
 														+ "WHERE productCode = :productCode";
+	
+	public static final String GET_CURRENT_EMPLOYEE_ORDERS_QUERY = "FROM Order WHERE employee = :employee "
+																	+ "ORDER BY orderDate DESC, "
+																	+ "orderTime DESC";
+
+	public static final String GET_CURRENT_EMPLOYEE_SELECTED_ORDER_QUERY = "FROM Order WHERE "
+																			+ "employee = :employee AND "
+																			+ "orderId = :orderId";
 }

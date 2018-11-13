@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.nagarro.java.training.saleo.dao.EmployeeDAO;
 import com.nagarro.java.training.saleo.models.Employee;
+import com.nagarro.java.training.saleo.models.Order;
 import com.nagarro.java.training.saleo.services.EmployeeService;
 
 @Service
@@ -29,6 +30,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public Employee getCurrentEmployee(int employeeId) {
 
 		return employeeDAO.getEmployeeById(employeeId);
+	}
+
+	@Override
+	@Transactional
+	public void updateEmployeeCashDrawer(Order newOrder, int employeeId) {
+		
+		double productPrice = newOrder.getProductCost();
+		
+		employeeDAO.updateCashDrawer(productPrice, employeeId);
 	}
 	
 	

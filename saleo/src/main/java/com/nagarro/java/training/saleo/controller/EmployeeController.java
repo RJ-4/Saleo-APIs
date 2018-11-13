@@ -5,17 +5,23 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nagarro.java.training.saleo.models.Employee;
+import com.nagarro.java.training.saleo.models.Order;
 import com.nagarro.java.training.saleo.services.EmployeeService;
+import com.nagarro.java.training.saleo.services.OrderService;
 
 @RestController
 public class EmployeeController {
 
 	@Autowired
 	EmployeeService employeeService;
+	
+	@Autowired
+	OrderService orderService;
 	
 	@GetMapping("/employees")
 	public List<Employee> getEmployees() {
@@ -29,9 +35,28 @@ public class EmployeeController {
 		return employeeService.getCurrentEmployee(employeeId);
 	}
 	
-	@RequestMapping("/employees/{employeeId}/orders")
-	public OrdersController getOrdersController() {
+//	@RequestMapping("/employees/{employeeId}/orders")
+//	public OrdersController getOrdersController() {
+//		
+//		return new OrdersController();
+//	}
+	
+	@PostMapping("employees/{employeeId}/customers/{customerId}/products/{productCode}/orders")
+	public Order addOrder(@RequestBody Order newOrder, @PathVariable int employeeId, 
+							@PathVariable int customerId, @PathVariable int productCode) {
 		
-		return new OrdersController();
+		return orderService.addNewOrder(newOrder, employeeId, customerId, productCode);
+	}
+	
+	@GetMapping("/employees/{employeeId}/orders")
+	public List<Order> getCurrentEmployeeOrders(@PathVariable int employeeId) {
+		
+		return orderService.getCurrentEmployeeOrders(employeeId);
+	}
+	
+	@GetMapping("/employees/{employeeId}/orders/{orderId}")
+	public Order getCurrentEmployeeSelectedOrder(@PathVariable int employeeId, @PathVariable int orderId) {
+		
+		return orderService.getCurrentEmployeeSelectedOrder(employeeId, orderId);
 	}
 }

@@ -13,4 +13,6 @@ public interface ProductDAO {
 	public Product addNewProduct(Product newProduct);
 	
 	public Product updateProduct(Product updatedProduct, int productCode);
+	
+	public void updateProductStock(int orderedItemQuantity, int productCode);
 }
