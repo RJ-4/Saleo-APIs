@@ -1,10 +1,15 @@
 package com.nagarro.java.training.saleo.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -27,6 +32,31 @@ public class Product {
 	
 	@Column(name = "product_description")
 	private String productDescription;
+	
+	
+	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH},
+				mappedBy = "product")
+	private List<OrderDetails> orderDetails;
+	
+	public List<OrderDetails> getOrderDetails() {
+		return orderDetails;
+	}
+
+	public void setOrderDetails(List<OrderDetails> orderDetails) {
+		this.orderDetails = orderDetails;
+	}
+	
+	public void addOrderDetail(OrderDetails newOrderDetail) {
+		
+		if(orderDetails == null) {
+			
+			orderDetails = new ArrayList<>();
+		}
+		
+		orderDetails.add(newOrderDetail);
+		
+		newOrderDetail.setProduct(this);
+	}
 
 	@Override
 	public String toString() {
