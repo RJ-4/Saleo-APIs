@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.nagarro.java.training.saleo.dao.EmployeeDAO;
 import com.nagarro.java.training.saleo.models.Employee;
+import com.nagarro.java.training.saleo.token.AuthToken;
 
 import static com.nagarro.java.training.saleo.constants.Constants.*;
 
@@ -18,6 +19,9 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 	@Autowired
 	SessionFactory factory;
+	
+	@Autowired
+	AuthToken authToken;
 	
 	@Override
 	public List<Employee> getEmployees() {
@@ -37,7 +41,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	}
 
 	@Override
-	public Employee getEmployeeById(int employeeId) {
+	public Employee getEmployeeById(int employeeId) throws Exception {
 		
 		Session session = factory.getCurrentSession();
 		
@@ -63,6 +67,35 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		double currentCashDrawer = currentEmployee.getEmployeeCashDrawer();
 		
 		currentEmployee.setEmployeeCashDrawer(currentCashDrawer + productPrice);
+	}
+
+	@Override
+	public Employee addNewEmployee(Employee newEmployee) {
+		
+		Session session = factory.getCurrentSession();
+		
+		if(newEmployee.getEmployeeCashDrawer() == null) {
+			
+			newEmployee.setEmployeeCashDrawer(0.0);
+		}
+		
+		session.save(newEmployee);
+		
+		return newEmployee;
+	}
+
+	@Override
+	public Employee updateEmployeeAndAddAuthToken(Employee recentlyAddedEmployee) {
+
+		Session session = factory.getCurrentSession();
+		
+		Employee currentEmployee = session.get(Employee.class, recentlyAddedEmployee.getEmployeeId());
+		
+		String token = authToken.generateToken(recentlyAddedEmployee.getEmployeeId());
+		
+		currentEmployee.setToken(token);
+		
+		return currentEmployee;
 	}
 
 }

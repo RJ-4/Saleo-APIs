@@ -36,7 +36,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	}
 
 	@Override
-	public Customer getCustomer(int customerId) {
+	public Customer getCustomer(int customerId) throws Exception {
 
 		Session session = factory.getCurrentSession();
 		
@@ -65,7 +65,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	}
 
 	@Override
-	public Customer updateCustomer(Customer updatedCustomer, int customerId) {
+	public Customer updateCustomer(Customer updatedCustomer, int customerId) throws NullPointerException {
 		
 		Session session = factory.getCurrentSession();
 		

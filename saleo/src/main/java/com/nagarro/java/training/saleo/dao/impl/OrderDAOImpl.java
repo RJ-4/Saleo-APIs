@@ -1,5 +1,7 @@
 package com.nagarro.java.training.saleo.dao.impl;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -22,7 +24,7 @@ public class OrderDAOImpl implements OrderDAO {
 	SessionFactory factory;
 	
 	@Override
-	public Order addNewOrder(Order newOrder, int employeeId, int customerId, int productCode) {
+	public Order addNewOrderInCart(Order newOrder, int employeeId, int customerId, int productCode) {
 
 		Session session = factory.getCurrentSession();
 		
@@ -35,12 +37,10 @@ public class OrderDAOImpl implements OrderDAO {
 		Product selectedProduct = session.get(Product.class, productCode);
 		selectedProduct.addOrder(newOrder);
 		
-		Double productCost = selectedProduct.getProductUnitPrice() * newOrder.getProductQuantity();
+		Double productCost = selectedProduct.getProductUnitPrice();
 		newOrder.setProductCost(productCost);
 		
 		session.save(newOrder);
-		
-		
 		
 		return newOrder;
 		
@@ -86,5 +86,48 @@ public class OrderDAOImpl implements OrderDAO {
 		
 		return selectedOrder;
 		
+	}
+
+	@Override
+	public Order saveOrPlaceOrder(Order updatedOrder, int employeeId, int customerId, int productCode, 
+									int orderId) {
+		
+		Session session = factory.getCurrentSession();
+		
+		Order currentOrder = session.get(Order.class, orderId);
+		
+		currentOrder.setOrderDate(LocalDate.now());
+		
+		currentOrder.setOrderTime(LocalTime.now());
+		
+		currentOrder.setOrderStatus(updatedOrder.getOrderStatus());
+		
+		currentOrder.setProductQuantity(updatedOrder.getProductQuantity());
+		
+		currentOrder.setProductCost(currentOrder.getProductCost() * updatedOrder.getProductQuantity());
+		
+		if(updatedOrder.getOrderStatus().equalsIgnoreCase("Completed")) {
+			
+			currentOrder.setModeOfPayment(updatedOrder.getModeOfPayment());
+		}
+		
+		return currentOrder;
+	}
+
+	@Override
+	public void deleteItemsInCustomerCart(int customerId) {
+
+		Session session = factory.getCurrentSession();
+		
+		Customer currentCustomer = session.get(Customer.class, customerId);
+		
+		String deleteProductsInCartQuery = DELETE_PRODUCTS_IN_CART_QUERY;
+		
+		@SuppressWarnings("rawtypes")
+		Query query = session.createQuery(deleteProductsInCartQuery);
+		
+		query.setParameter("customer", currentCustomer);
+		
+		query.executeUpdate();
 	}
 }

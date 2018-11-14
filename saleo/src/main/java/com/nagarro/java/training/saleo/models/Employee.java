@@ -38,6 +38,9 @@ public class Employee {
 	
 	@Column(name = "employee_cash_drawer")
 	private Double employeeCashDrawer;
+	
+	@Column(name = "token")
+	private String token;
 
 	public Integer getEmployeeId() {
 		return employeeId;
@@ -45,6 +48,14 @@ public class Employee {
 
 	public void setEmployeeId(Integer employeeId) {
 		this.employeeId = employeeId;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public String getEmployeeName() {
@@ -79,12 +90,14 @@ public class Employee {
 		this.orders = orders;
 	}
 
+	
 	@Override
 	public String toString() {
-		return "Employee [employeeId=" + employeeId + ", employeeName=" + employeeName + ", employeePassword="
-				+ employeePassword + ", employeeCashDrawer=" + employeeCashDrawer + "]";
+		return "Employee [orders=" + orders + ", employeeId=" + employeeId + ", employeeName=" + employeeName
+				+ ", employeePassword=" + employeePassword + ", employeeCashDrawer=" + employeeCashDrawer + ", token="
+				+ token + "]";
 	}
-	
+
 	//Setting bi-directional mapping
 	public void addOrder(Order newOrder) {
 		

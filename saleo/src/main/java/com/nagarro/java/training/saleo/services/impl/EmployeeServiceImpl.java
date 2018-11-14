@@ -8,15 +8,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nagarro.java.training.saleo.dao.EmployeeDAO;
+import com.nagarro.java.training.saleo.exceptions.EmployeeNotFoundException;
 import com.nagarro.java.training.saleo.models.Employee;
 import com.nagarro.java.training.saleo.models.Order;
 import com.nagarro.java.training.saleo.services.EmployeeService;
+import com.nagarro.java.training.saleo.token.AuthToken;
+import static com.nagarro.java.training.saleo.constants.Constants.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
 	@Autowired
 	EmployeeDAO employeeDAO;
+	
+	@Autowired
+	AuthToken authToken;
 	
 	@Override
 	@Transactional
@@ -29,7 +35,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Transactional
 	public Employee getCurrentEmployee(int employeeId) {
 
-		return employeeDAO.getEmployeeById(employeeId);
+		try {
+			
+			return employeeDAO.getEmployeeById(employeeId);
+		
+		} catch (Exception e) {
+
+			throw new EmployeeNotFoundException(EMPLOYEE_NOT_FOUND_EXCEPTION_MESSAGE);
+		}
 	}
 
 	@Override
@@ -40,7 +53,40 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		employeeDAO.updateCashDrawer(productPrice, employeeId);
 	}
-	
-	
 
+	@Override
+	@Transactional
+	public Employee registerEmployee(Employee newEmployee) {
+		
+		newEmployee = employeeDAO.addNewEmployee(newEmployee);
+		
+		newEmployee = employeeDAO.updateEmployeeAndAddAuthToken(newEmployee);
+		
+		return newEmployee;
+	
+	}
+
+	@Override
+	@Transactional
+	public Employee authenticateEmployeeLogin(Employee currentEmployee) {
+	
+		
+		Employee existingEmployee;
+		
+		try {
+			
+			existingEmployee = employeeDAO.getEmployeeById(currentEmployee.getEmployeeId());
+		
+		} catch (Exception e) {
+
+			throw new EmployeeNotFoundException(EMPLOYEE_NOT_FOUND_EXCEPTION_MESSAGE);
+		}
+		
+		if(!currentEmployee.getEmployeePassword().equals(existingEmployee.getEmployeePassword())) {
+			
+			throw new EmployeeNotFoundException(EMPLOYEE_NOT_FOUND_EXCEPTION_MESSAGE);
+		}
+		
+		return existingEmployee;
+	}
 }

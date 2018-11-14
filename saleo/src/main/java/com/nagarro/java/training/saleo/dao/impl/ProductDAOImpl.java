@@ -56,28 +56,25 @@ public class ProductDAOImpl implements ProductDAO {
 	}
 
 	@Override
-	public Product updateProduct(Product updatedProduct, int productCode) {
+	public Product updateProduct(Product updatedProduct, int productCode) throws NullPointerException {
 		
 		Session session = factory.getCurrentSession();
 		
-		String updateProductQuery = UPDATE_PRODUCT_QUERY;
+		Product currentProduct = session.get(Product.class, productCode);
 		
-		@SuppressWarnings("rawtypes")
-		Query query = session.createQuery(updateProductQuery);
+		currentProduct.setProductName(updatedProduct.getProductName());
 		
-		query.setParameter("productCode", productCode);
-		query.setParameter("productName", updatedProduct.getProductName());
-		query.setParameter("productDescription", updatedProduct.getProductDescription());
-		query.setParameter("productStock", updatedProduct.getProductStock());
-		query.setParameter("productUnitPrice", updatedProduct.getProductUnitPrice());
+		currentProduct.setProductDescription(updatedProduct.getProductDescription());
 		
-		query.executeUpdate();
+		currentProduct.setProductStock(updatedProduct.getProductStock());
 		
-		return updatedProduct;
+		currentProduct.setProductUnitPrice(updatedProduct.getProductUnitPrice());
+		
+		return currentProduct;
 	}
 
 	@Override
-	public void updateProductStock(int orderedItemQuantity, int productCode) {
+	public void updateProductStock(int orderedItemQuantity, int productCode) throws NullPointerException {
 
 		Session session = factory.getCurrentSession();
 		

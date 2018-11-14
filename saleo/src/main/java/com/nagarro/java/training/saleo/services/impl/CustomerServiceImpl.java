@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nagarro.java.training.saleo.dao.CustomerDAO;
+import com.nagarro.java.training.saleo.exceptions.CustomerNotFoundException;
 import com.nagarro.java.training.saleo.models.Customer;
 import com.nagarro.java.training.saleo.services.CustomerService;
+import static com.nagarro.java.training.saleo.constants.Constants.*;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -28,7 +30,14 @@ public class CustomerServiceImpl implements CustomerService {
 	@Transactional
 	public Customer getSingleCustomer(int customerId) {
 
-		return customerDAO.getCustomer(customerId);
+		try {
+			
+			return customerDAO.getCustomer(customerId);
+		
+		} catch (Exception e) {
+
+			throw new CustomerNotFoundException(CUSTOMER_NOT_FOUND_EXCEPTION_MESSAGE);
+		}
 		
 	}
 
@@ -43,11 +52,20 @@ public class CustomerServiceImpl implements CustomerService {
 	@Transactional
 	public Customer updateCustomer(Customer updatedCustomer, int customerId) {
 
-		Customer updatedExistingCustomer = customerDAO.updateCustomer(updatedCustomer, customerId);
+		Customer updatedExistingCustomer;
 		
-		updatedExistingCustomer.setCustomerId(customerId);
+		try{
 		
-		return updatedExistingCustomer;
-	
+			updatedExistingCustomer = customerDAO.updateCustomer(updatedCustomer, customerId);
+		
+			updatedExistingCustomer.setCustomerId(customerId);
+			
+			return updatedExistingCustomer;
+		
+		} catch (NullPointerException e) {
+			
+			throw new CustomerNotFoundException(CUSTOMER_NOT_FOUND_EXCEPTION_MESSAGE);
+		}
+		
 	}
 }

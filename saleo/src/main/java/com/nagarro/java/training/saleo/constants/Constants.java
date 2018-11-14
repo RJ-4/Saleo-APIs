@@ -28,12 +28,6 @@ public class Constants {
 	
 	public static final String GET_SINGLE_PRODUCT_QUERY = "FROM Product WHERE productId = :productId";
 	
-	public static final String UPDATE_PRODUCT_QUERY = "UPDATE Product SET productName = :productName, "
-														+ "productDescription = :productDescription, "
-														+ "productStock = :productStock, "
-														+ "productUnitPrice = :productUnitPrice "
-														+ "WHERE productCode = :productCode";
-	
 	public static final String GET_CURRENT_EMPLOYEE_ORDERS_QUERY = "FROM Order WHERE employee = :employee "
 																	+ "ORDER BY orderDate DESC, "
 																	+ "orderTime DESC";
@@ -41,4 +35,17 @@ public class Constants {
 	public static final String GET_CURRENT_EMPLOYEE_SELECTED_ORDER_QUERY = "FROM Order WHERE "
 																			+ "employee = :employee AND "
 																			+ "orderId = :orderId";
+	
+	public static final String SLUG = "saleo1234567890";
+	
+	public static final String EMPLOYEE_NOT_FOUND_EXCEPTION_MESSAGE = "Invalid employee ID or password!!!";
+	
+	public static final String CUSTOMER_NOT_FOUND_EXCEPTION_MESSAGE = "No such customer exists!!!";
+			
+	public static final String PRODUCT_NOT_FOUND_EXCEPTION_MESSAGE = "No such product exists!!!";
+			
+	public static final String ORDER_NOT_FOUND_EXCEPTION_MESSAGE = "No such order exists!!!";
+	
+	public static final String DELETE_PRODUCTS_IN_CART_QUERY = "DELETE FROM Order WHERE customer = : customer "
+																+ "AND modeOfPayment = null";
 }

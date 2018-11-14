@@ -12,4 +12,8 @@ public interface EmployeeService {
 	public Employee getCurrentEmployee(int employeeId);
 	
 	public void updateEmployeeCashDrawer(Order newOrder, int employeeId);
+	
+	public Employee registerEmployee(Employee newEmployee);
+	
+	public Employee authenticateEmployeeLogin(Employee currentEmployee);
 }

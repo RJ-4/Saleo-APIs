@@ -1,7 +1,5 @@
 package com.nagarro.java.training.saleo.services.impl;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -29,19 +27,15 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Override
 	@Transactional
-	public Order addNewOrder(Order newOrder, int employeeId, int customerId, int productCode) {
+	public Order addNewOrderInCart(int employeeId, int customerId, int productCode) {
 
-		newOrder.setOrderDate(LocalDate.now());
+		Order newOrder = new Order();
 		
-		newOrder.setOrderTime(LocalTime.now());
+		newOrder.setProductQuantity(1);
 		
-		Order newAddedOrder = orderDAO.addNewOrder(newOrder, employeeId, customerId, productCode);
+		newOrder = orderDAO.addNewOrderInCart(newOrder, employeeId, customerId, productCode);
 		
-		productService.updateProductStock(newOrder, productCode);
-
-		employeeService.updateEmployeeCashDrawer(newOrder, employeeId);
-		
-		return newAddedOrder;
+		return newOrder;
 	}
 
 	@Override
@@ -56,5 +50,30 @@ public class OrderServiceImpl implements OrderService {
 	public Order getCurrentEmployeeSelectedOrder(int employeeId, int orderId) {
 
 		return orderDAO.getCurrentEmployeeSelectedOrder(employeeId, orderId);
+	}
+
+	@Override
+	@Transactional
+	public Order saveOrPlaceOrder(Order updatedOrder, int employeeId, int customerId, int productCode,
+									int orderId) {
+		
+		updatedOrder = orderDAO.saveOrPlaceOrder(updatedOrder, employeeId, customerId, productCode, orderId);
+		
+		if (updatedOrder.getOrderStatus().equalsIgnoreCase("Completed")) {
+		
+			productService.updateProductStock(updatedOrder, productCode);
+			
+			employeeService.updateEmployeeCashDrawer(updatedOrder, employeeId);
+			
+		}
+		
+		return updatedOrder;
+	}
+
+	@Override
+	@Transactional
+	public void emptyCustomerCart(int customerId) {
+		
+		orderDAO.deleteItemsInCustomerCart(customerId);
 	}
 }
