@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nagarro.java.training.saleo.models.Employee;
 import com.nagarro.java.training.saleo.models.Order;
 import com.nagarro.java.training.saleo.services.EmployeeService;
 import com.nagarro.java.training.saleo.services.OrderService;
+import static com.nagarro.java.training.saleo.constants.Constants.*;
 
 @RestController
 public class EmployeeController {
@@ -26,9 +28,9 @@ public class EmployeeController {
 	OrderService orderService;
 	
 	@GetMapping("/employees")
-	public List<Employee> getEmployees() {
+	public List<Employee> getEmployees(@RequestHeader(TOKEN) String authToken) {
 		
-		return employeeService.getEmployees();
+		return employeeService.getEmployees(authToken);
 	}
 	
 	
@@ -40,9 +42,9 @@ public class EmployeeController {
 	
 	
 	@GetMapping("/employees/{employeeId}")
-	public Employee getEmployeeById(@PathVariable Integer employeeId) {
+	public Employee getEmployeeById(@RequestHeader(TOKEN) String authToken, @PathVariable Integer employeeId) {
 		
-		return employeeService.getCurrentEmployee(employeeId);
+		return employeeService.getCurrentEmployee(authToken, employeeId);
 	}
 	
 	
@@ -54,38 +56,42 @@ public class EmployeeController {
 	
 	
 	@PostMapping("employees/{employeeId}/customers/{customerId}/products/{productCode}/orders")
-	public Order addOrderInCart(@PathVariable int employeeId, 
-							@PathVariable int customerId, @PathVariable int productCode) {
+	public Order addOrderInCart(@RequestHeader(TOKEN) String authToken, @PathVariable int employeeId, 
+									@PathVariable int customerId, @PathVariable int productCode) {
 		
-		return orderService.addNewOrderInCart(employeeId, customerId, productCode);
+		return orderService.addNewOrderInCart(authToken, employeeId, customerId, productCode);
 	}
 	
 	
 	@PutMapping("employees/{employeeId}/customers/{customerId}/products/{productCode}/orders/{orderId}")
-	public Order saveOrPlaceOrder(@RequestBody Order updatedOrder, @PathVariable int employeeId, 
-			@PathVariable int customerId, @PathVariable int productCode, @PathVariable int orderId){
+	public Order saveOrPlaceOrder(@RequestHeader(TOKEN) String authToken, @RequestBody Order updatedOrder, @PathVariable int employeeId, 
+										@PathVariable int customerId, @PathVariable int productCode, 
+										@PathVariable int orderId){
 		
-		return orderService.saveOrPlaceOrder(updatedOrder, employeeId, customerId, productCode, orderId);
+		return orderService.saveOrPlaceOrder(authToken, updatedOrder, employeeId, customerId, productCode, orderId);
 		
 	}
 	
 	
 	@GetMapping("/employees/{employeeId}/orders")
-	public List<Order> getCurrentEmployeeOrders(@PathVariable int employeeId) {
+	public List<Order> getCurrentEmployeeOrders(@RequestHeader(TOKEN) String authToken, 
+													@PathVariable int employeeId) {
 		
-		return orderService.getCurrentEmployeeOrders(employeeId);
+		return orderService.getCurrentEmployeeOrders(authToken, employeeId);
 	}
 	
 	
 	@GetMapping("/employees/{employeeId}/orders/{orderId}")
-	public Order getCurrentEmployeeSelectedOrder(@PathVariable int employeeId, @PathVariable int orderId) {
+	public Order getCurrentEmployeeSelectedOrder(@RequestHeader(TOKEN) String authToken, 
+													@PathVariable int employeeId, @PathVariable int orderId) {
 		
-		return orderService.getCurrentEmployeeSelectedOrder(employeeId, orderId);
+		return orderService.getCurrentEmployeeSelectedOrder(authToken, employeeId, orderId);
 	}
 	
 	@DeleteMapping("/employees/{employeeId}/customers/{customerId}/orders")
-	public void emptyCustomerCart(@PathVariable int employeeId, @PathVariable int customerId) {
+	public void emptyCustomerCart(@RequestHeader(TOKEN) String authToken, 
+										@PathVariable int employeeId, @PathVariable int customerId) {
 		
-		orderService.emptyCustomerCart(customerId);
+		orderService.emptyCustomerCart(authToken, customerId);
 	}
 }

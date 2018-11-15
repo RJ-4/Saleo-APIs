@@ -12,6 +12,7 @@ import com.nagarro.java.training.saleo.models.Order;
 import com.nagarro.java.training.saleo.services.EmployeeService;
 import com.nagarro.java.training.saleo.services.OrderService;
 import com.nagarro.java.training.saleo.services.ProductService;
+import com.nagarro.java.training.saleo.token.AuthToken;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -25,9 +26,14 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	ProductService productService;
 	
+	@Autowired
+	AuthToken auth;
+	
 	@Override
 	@Transactional
-	public Order addNewOrderInCart(int employeeId, int customerId, int productCode) {
+	public Order addNewOrderInCart(String authToken, int employeeId, int customerId, int productCode) {
+
+		auth.checkUserAuthorization(authToken);
 
 		Order newOrder = new Order();
 		
@@ -40,28 +46,34 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	@Transactional
-	public List<Order> getCurrentEmployeeOrders(int employeeId) {
+	public List<Order> getCurrentEmployeeOrders(String authToken, int employeeId) {
 
+		auth.checkUserAuthorization(authToken);
+		
 		return orderDAO.getCurrentEmployeeOrders(employeeId);
 	}
 
 	@Override
 	@Transactional
-	public Order getCurrentEmployeeSelectedOrder(int employeeId, int orderId) {
+	public Order getCurrentEmployeeSelectedOrder(String authToken, int employeeId, int orderId) {
 
+		auth.checkUserAuthorization(authToken);
+		
 		return orderDAO.getCurrentEmployeeSelectedOrder(employeeId, orderId);
 	}
 
 	@Override
 	@Transactional
-	public Order saveOrPlaceOrder(Order updatedOrder, int employeeId, int customerId, int productCode,
-									int orderId) {
+	public Order saveOrPlaceOrder(String authToken, Order updatedOrder, int employeeId, int customerId, 
+									int productCode, int orderId) {
+		
+		auth.checkUserAuthorization(authToken);
 		
 		updatedOrder = orderDAO.saveOrPlaceOrder(updatedOrder, employeeId, customerId, productCode, orderId);
 		
 		if (updatedOrder.getOrderStatus().equalsIgnoreCase("Completed")) {
 		
-			productService.updateProductStock(updatedOrder, productCode);
+			productService.updateProductStock(authToken, updatedOrder, productCode);
 			
 			employeeService.updateEmployeeCashDrawer(updatedOrder, employeeId);
 			
@@ -72,7 +84,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	@Transactional
-	public void emptyCustomerCart(int customerId) {
+	public void emptyCustomerCart(String authToken, int customerId) {
+		
+		auth.checkUserAuthorization(authToken);
 		
 		orderDAO.deleteItemsInCustomerCart(customerId);
 	}

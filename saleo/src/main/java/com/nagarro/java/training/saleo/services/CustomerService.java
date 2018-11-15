@@ -6,11 +6,11 @@ import com.nagarro.java.training.saleo.models.Customer;
 
 public interface CustomerService {
 
-	public List<Customer> getAllCustomers();
+	public List<Customer> getAllCustomers(String authToken);
 	
-	public Customer getSingleCustomer(int customerId);
+	public Customer getSingleCustomer(String authToken, int customerId);
 	
-	public Customer addNewCustomer(Customer newCustomer);
+	public Customer addNewCustomer(String authToken, Customer newCustomer);
 	
-	public Customer updateCustomer(Customer updatedCustomer, int customerId);
+	public Customer updateCustomer(String authToken, Customer updatedCustomer, int customerId);
 }

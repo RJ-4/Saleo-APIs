@@ -7,4 +7,6 @@ public interface AuthToken {
 	public String decodeToken(String token);
 	
 	public String getSlug();
+	
+	public void checkUserAuthorization(String authToken);
 }

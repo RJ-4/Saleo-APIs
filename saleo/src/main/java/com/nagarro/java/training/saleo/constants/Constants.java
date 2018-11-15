@@ -48,4 +48,8 @@ public class Constants {
 	
 	public static final String DELETE_PRODUCTS_IN_CART_QUERY = "DELETE FROM Order WHERE customer = : customer "
 																+ "AND modeOfPayment = null";
+	
+	public static final String TOKEN = "Token";
+	
+	public static final String USER_NOT_AUTHORIZED_EXCEPTION_MESSAGE = "Not authorized!!!";
 }

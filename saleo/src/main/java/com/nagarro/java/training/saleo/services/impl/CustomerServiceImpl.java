@@ -1,5 +1,7 @@
 package com.nagarro.java.training.saleo.services.impl;
 
+import static com.nagarro.java.training.saleo.constants.Constants.CUSTOMER_NOT_FOUND_EXCEPTION_MESSAGE;
+
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -11,7 +13,7 @@ import com.nagarro.java.training.saleo.dao.CustomerDAO;
 import com.nagarro.java.training.saleo.exceptions.CustomerNotFoundException;
 import com.nagarro.java.training.saleo.models.Customer;
 import com.nagarro.java.training.saleo.services.CustomerService;
-import static com.nagarro.java.training.saleo.constants.Constants.*;
+import com.nagarro.java.training.saleo.token.AuthToken;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -19,16 +21,23 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	CustomerDAO customerDAO;
 	
+	@Autowired
+	AuthToken auth;
+	
 	@Override
 	@Transactional
-	public List<Customer> getAllCustomers() {
+	public List<Customer> getAllCustomers(String authToken) {
 
+		auth.checkUserAuthorization(authToken);
+		
 		return customerDAO.getAllCustomers();
 	}
 
 	@Override
 	@Transactional
-	public Customer getSingleCustomer(int customerId) {
+	public Customer getSingleCustomer(String authToken, int customerId) {
+
+		auth.checkUserAuthorization(authToken); 
 
 		try {
 			
@@ -38,20 +47,23 @@ public class CustomerServiceImpl implements CustomerService {
 
 			throw new CustomerNotFoundException(CUSTOMER_NOT_FOUND_EXCEPTION_MESSAGE);
 		}
-		
 	}
 
 	@Override
 	@Transactional
-	public Customer addNewCustomer(Customer newCustomer) {
+	public Customer addNewCustomer(String authToken, Customer newCustomer) {
 
+		auth.checkUserAuthorization(authToken);
+		
 		return customerDAO.saveCustomer(newCustomer);
 	}
 
 	@Override
 	@Transactional
-	public Customer updateCustomer(Customer updatedCustomer, int customerId) {
+	public Customer updateCustomer(String authToken, Customer updatedCustomer, int customerId) {
 
+		auth.checkUserAuthorization(authToken);
+		
 		Customer updatedExistingCustomer;
 		
 		try{

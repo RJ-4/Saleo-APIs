@@ -6,14 +6,14 @@ import com.nagarro.java.training.saleo.models.Order;
 
 public interface OrderService {
 
-	public Order addNewOrderInCart(int employeeId, int customerId, int productCode);
+	public Order addNewOrderInCart(String authToken, int employeeId, int customerId, int productCode);
 	
-	public List<Order> getCurrentEmployeeOrders(int employeeId);
+	public List<Order> getCurrentEmployeeOrders(String authToken, int employeeId);
 	
-	public Order getCurrentEmployeeSelectedOrder(int employeeId, int orderId);
+	public Order getCurrentEmployeeSelectedOrder(String authToken, int employeeId, int orderId);
 	
-	public Order saveOrPlaceOrder(Order updatedOrder, int employeeId, int customerId, int productCode,
+	public Order saveOrPlaceOrder(String authToken, Order updatedOrder, int employeeId, int customerId, int productCode,
 									int orderId);
 	
-	public void emptyCustomerCart(int customerId);
+	public void emptyCustomerCart(String authToken, int customerId);
 }

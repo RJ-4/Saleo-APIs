@@ -22,19 +22,23 @@ public class EmployeeServiceImpl implements EmployeeService {
 	EmployeeDAO employeeDAO;
 	
 	@Autowired
-	AuthToken authToken;
+	AuthToken auth;
 	
 	@Override
 	@Transactional
-	public List<Employee> getEmployees() {
+	public List<Employee> getEmployees(String authToken) {
 	
+		auth.checkUserAuthorization(authToken);
+		
 		return employeeDAO.getEmployees();
 	}
 
 	@Override
 	@Transactional
-	public Employee getCurrentEmployee(int employeeId) {
+	public Employee getCurrentEmployee(String authToken, int employeeId) {
 
+		auth.checkUserAuthorization(authToken);
+		
 		try {
 			
 			return employeeDAO.getEmployeeById(employeeId);

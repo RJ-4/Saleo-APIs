@@ -7,13 +7,13 @@ import com.nagarro.java.training.saleo.models.Product;
 
 public interface ProductService {
 
-	public List<Product> getAllProducts();
+	public List<Product> getAllProducts(String authToken);
 	
-	public Product getSingleProduct(int productId);
+	public Product getSingleProduct(String authToken, int productId);
 	
-	public Product addNewProduct(Product newProduct);
+	public Product addNewProduct(String authToken, Product newProduct);
 	
-	public Product updateProduct(Product updatedProduct, int productCode);
+	public Product updateProduct(String authToken, Product updatedProduct, int productCode);
 	
-	public void updateProductStock(Order newOrder, int productCode);
+	public void updateProductStock(String authToken, Order newOrder, int productCode);
 }

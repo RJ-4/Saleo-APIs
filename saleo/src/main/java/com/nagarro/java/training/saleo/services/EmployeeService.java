@@ -7,9 +7,9 @@ import com.nagarro.java.training.saleo.models.Order;
 
 public interface EmployeeService {
 
-	public List<Employee> getEmployees();
+	public List<Employee> getEmployees(String authToken);
 	
-	public Employee getCurrentEmployee(int employeeId);
+	public Employee getCurrentEmployee(String authToken, int employeeId);
 	
 	public void updateEmployeeCashDrawer(Order newOrder, int employeeId);
 	

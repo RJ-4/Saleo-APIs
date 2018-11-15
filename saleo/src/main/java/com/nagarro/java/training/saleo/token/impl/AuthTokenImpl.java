@@ -4,8 +4,10 @@ import java.util.Base64;
 
 import org.springframework.stereotype.Component;
 
+import com.nagarro.java.training.saleo.exceptions.UserNotAuthorizedException;
 import com.nagarro.java.training.saleo.token.AuthToken;
 import static com.nagarro.java.training.saleo.constants.Constants.SLUG;
+import static com.nagarro.java.training.saleo.constants.Constants.USER_NOT_AUTHORIZED_EXCEPTION_MESSAGE;
 
 @Component
 public class AuthTokenImpl implements AuthToken{
@@ -49,6 +51,15 @@ public class AuthTokenImpl implements AuthToken{
 		
 		return slug;
 	
+	}
+
+	@Override
+	public void checkUserAuthorization(String authToken) {
+
+		if(authToken == "") {
+			
+			throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED_EXCEPTION_MESSAGE);
+		}
 	}
 	
 }
