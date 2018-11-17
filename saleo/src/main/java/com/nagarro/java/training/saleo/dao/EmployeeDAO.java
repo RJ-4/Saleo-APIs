@@ -16,5 +16,5 @@ public interface EmployeeDAO {
 	
 	public Employee updateEmployeeAndAddAuthToken(Employee recentlyAddedEmployee);
 	
-
+	public void setCashDrawerAmountAtLogin(int currentEmployeeId, double startingAmountAtLogin);
 }

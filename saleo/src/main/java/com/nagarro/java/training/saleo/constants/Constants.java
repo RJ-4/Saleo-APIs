@@ -52,4 +52,6 @@ public class Constants {
 	public static final String TOKEN = "Token";
 	
 	public static final String USER_NOT_AUTHORIZED_EXCEPTION_MESSAGE = "Not authorized!!!";
+	
+	public static final int TAX_ON_PRODUCT = 10;
 }

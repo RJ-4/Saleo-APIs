@@ -3,6 +3,7 @@ package com.nagarro.java.training.saleo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import com.nagarro.java.training.saleo.services.OrderService;
 import static com.nagarro.java.training.saleo.constants.Constants.*;
 
 @RestController
+@CrossOrigin
 public class EmployeeController {
 
 	@Autowired
@@ -64,9 +66,12 @@ public class EmployeeController {
 	
 	
 	@PutMapping("employees/{employeeId}/customers/{customerId}/products/{productCode}/orders/{orderId}")
-	public Order saveOrPlaceOrder(@RequestHeader(TOKEN) String authToken, @RequestBody Order updatedOrder, @PathVariable int employeeId, 
-										@PathVariable int customerId, @PathVariable int productCode, 
-										@PathVariable int orderId){
+	public Order saveOrPlaceOrder(@RequestHeader(TOKEN) String authToken, 
+									@RequestBody Order updatedOrder, 
+									@PathVariable int employeeId, 
+									@PathVariable int customerId, 
+									@PathVariable int productCode, 
+									@PathVariable int orderId){
 		
 		return orderService.saveOrPlaceOrder(authToken, updatedOrder, employeeId, customerId, productCode, orderId);
 		

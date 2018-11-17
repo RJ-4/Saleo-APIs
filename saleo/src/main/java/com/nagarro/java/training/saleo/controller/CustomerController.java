@@ -3,6 +3,7 @@ package com.nagarro.java.training.saleo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import com.nagarro.java.training.saleo.services.CustomerService;
 import static com.nagarro.java.training.saleo.constants.Constants.*;
 
 @RestController
+@CrossOrigin
 public class CustomerController {
 
 	@Autowired

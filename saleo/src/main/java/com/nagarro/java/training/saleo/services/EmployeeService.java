@@ -16,4 +16,6 @@ public interface EmployeeService {
 	public Employee registerEmployee(Employee newEmployee);
 	
 	public Employee authenticateEmployeeLogin(Employee currentEmployee);
+	
+	public void setCashDrawerAtLogin(int currentEmployeeId, double startingAmountAtLogin);
 }

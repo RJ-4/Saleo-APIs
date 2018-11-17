@@ -80,7 +80,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		try {
 			
 			existingEmployee = employeeDAO.getEmployeeById(currentEmployee.getEmployeeId());
+			
+			setCashDrawerAtLogin(currentEmployee.getEmployeeId(), currentEmployee.getEmployeeCashDrawer());
 		
+			existingEmployee.setEmployeeCashDrawer(currentEmployee.getEmployeeCashDrawer());
+			
 		} catch (Exception e) {
 
 			throw new EmployeeNotFoundException(EMPLOYEE_NOT_FOUND_EXCEPTION_MESSAGE);
@@ -92,5 +96,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 		
 		return existingEmployee;
+	}
+
+	@Override
+	@Transactional
+	public void setCashDrawerAtLogin(int currentEmployeeId, double startingAmountAtLogin) {
+
+		employeeDAO.setCashDrawerAmountAtLogin(currentEmployeeId, startingAmountAtLogin);
 	}
 }

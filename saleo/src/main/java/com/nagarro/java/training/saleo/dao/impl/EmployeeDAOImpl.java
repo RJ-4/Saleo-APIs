@@ -66,7 +66,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 		double currentCashDrawer = currentEmployee.getEmployeeCashDrawer();
 		
-		currentEmployee.setEmployeeCashDrawer(currentCashDrawer + productPrice);
+		currentEmployee.setEmployeeCashDrawer(currentCashDrawer + productPrice + TAX_ON_PRODUCT);
 	}
 
 	@Override
@@ -96,6 +96,16 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		currentEmployee.setToken(token);
 		
 		return currentEmployee;
+	}
+
+	@Override
+	public void setCashDrawerAmountAtLogin(int currentEmployeeId, double startingAmountAtLogin) {
+		
+		Session session = factory.getCurrentSession();
+		
+		Employee currentEmployee = session.get(Employee.class, currentEmployeeId);
+		
+		currentEmployee.setEmployeeCashDrawer(startingAmountAtLogin);
 	}
 
 }
