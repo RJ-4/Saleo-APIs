@@ -22,11 +22,9 @@ public class Constants {
 	
 	public static final String GET_ALL_CUSTOMERS_QUERY = "FROM Customer";
 	
-	public static final String GET_SINGLE_CUSTOMER_QUERY = "FROM Customer WHERE customerId = :customerId";
-	
 	public static final String GET_ALL_PRODUCTS_QUERY = "FROM Product";
 	
-	public static final String GET_SINGLE_PRODUCT_QUERY = "FROM Product WHERE productId = :productId";
+//	public static final String GET_SINGLE_PRODUCT_QUERY = "FROM Product WHERE productId = :productId";
 	
 	public static final String GET_CURRENT_EMPLOYEE_ORDERS_QUERY = "FROM Order WHERE employee = :employee "
 																	+ "ORDER BY orderDate DESC, "
@@ -54,4 +52,33 @@ public class Constants {
 	public static final String USER_NOT_AUTHORIZED_EXCEPTION_MESSAGE = "Not authorized!!!";
 	
 	public static final int TAX_ON_PRODUCT = 10;
+	
+	public static final String PRODUCT_SEARCH_PROPERTY = "productProperty";
+	
+	public static final String GET_SINGLE_PRODUCT_QUERY = "FROM Product WHERE "
+															+ "productCode = :" + PRODUCT_SEARCH_PROPERTY
+															+ " OR productName = :" + PRODUCT_SEARCH_PROPERTY
+															+ " OR productDescription = :" + PRODUCT_SEARCH_PROPERTY;
+
+	public static final String GET_LAST_GENERATED_PRODUCT_CODE_QUERY = "SELECT MAX(productCode)"
+																			+ " FROM Product";
+	
+	public static final String CUSTOMER_SEARCH_PROPERTY = "customerProperty";
+	
+	public static final String SEARCH_CUSTOMER_QUERY = "FROM Customer WHERE "
+														+ "customerId = :" + CUSTOMER_SEARCH_PROPERTY
+														+ " OR customerName = :" + CUSTOMER_SEARCH_PROPERTY
+														+ " OR customerMobileNo = :" + CUSTOMER_SEARCH_PROPERTY				
+														+ " OR customerEmailId = :" + CUSTOMER_SEARCH_PROPERTY;
+
+	public static final String GET_LAST_GENERATED_CUSTOMER_ID_QUERY = "SELECT MAX(customerId) "
+																		+ "FROM Customer";
+	
+	public static final String GET_SELECTED_EMPLOYEES_LAST_ORDER_QUERY_EMPLOYEE_ID_PARAM = "employee";
+	
+	public static final String GET_SELECTED_EMPLOYEES_LAST_ORDER_QUERY = "FROM Order WHERE orderId = "
+																		+ "(SELECT MAX(orderId) FROM Order"
+																		+ " WHERE " 
+																		+ GET_SELECTED_EMPLOYEES_LAST_ORDER_QUERY_EMPLOYEE_ID_PARAM
+																		+ "= :employee)";
 }

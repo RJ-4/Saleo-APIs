@@ -35,13 +35,13 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	@Transactional
-	public Customer getSingleCustomer(String authToken, int customerId) {
+	public List<Customer> searchCustomer(String authToken, String cutomerProperty) {
 
 		auth.checkUserAuthorization(authToken); 
 
 		try {
 			
-			return customerDAO.getCustomer(customerId);
+			return customerDAO.searchCustomer(cutomerProperty);
 		
 		} catch (Exception e) {
 
@@ -55,12 +55,16 @@ public class CustomerServiceImpl implements CustomerService {
 
 		auth.checkUserAuthorization(authToken);
 		
+		String newCustomerId = generateCustomerIdForNewCustomer();
+		
+		newCustomer.setCustomerId(newCustomerId);
+		
 		return customerDAO.saveCustomer(newCustomer);
 	}
 
 	@Override
 	@Transactional
-	public Customer updateCustomer(String authToken, Customer updatedCustomer, int customerId) {
+	public Customer updateCustomer(String authToken, Customer updatedCustomer, String customerId) {
 
 		auth.checkUserAuthorization(authToken);
 		
@@ -70,7 +74,7 @@ public class CustomerServiceImpl implements CustomerService {
 		
 			updatedExistingCustomer = customerDAO.updateCustomer(updatedCustomer, customerId);
 		
-			updatedExistingCustomer.setCustomerId(customerId);
+//			updatedExistingCustomer.setCustomerId(customerId);
 			
 			return updatedExistingCustomer;
 		
@@ -79,5 +83,18 @@ public class CustomerServiceImpl implements CustomerService {
 			throw new CustomerNotFoundException(CUSTOMER_NOT_FOUND_EXCEPTION_MESSAGE);
 		}
 		
+	}
+
+	@Override
+	@Transactional
+	public String generateCustomerIdForNewCustomer() {
+	
+		String latestCustomerId = customerDAO.getLatestCustomerId();
+		
+		int latestCustomerIdNumber = Integer.parseInt(latestCustomerId);
+		
+		String newCustomerId = "" + (latestCustomerIdNumber + 1);
+		
+		return newCustomerId;
 	}
 }

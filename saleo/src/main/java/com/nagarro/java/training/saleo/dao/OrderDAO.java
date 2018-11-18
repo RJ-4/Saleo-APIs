@@ -6,14 +6,16 @@ import com.nagarro.java.training.saleo.models.Order;
 
 public interface OrderDAO {
 
-	public Order addNewOrderInCart(Order newOrder, int employeeId, int customerId, int productCode);
+	public Order addNewOrderInCart(Order newOrder, int employeeId, String customerId, String productCode);
 
 	public List<Order> getCurrentEmployeeOrders(int employeeId);
 	
 	public Order getCurrentEmployeeSelectedOrder(int employeeId, int orderId);
 	
-	public Order saveOrPlaceOrder(Order updatedOrder, int employeeId, int customerId, int productCode,
-									int orderId);
+	public Order saveOrPlaceOrder(Order updatedOrder, int employeeId, String customerId, 
+									String productCode,	int orderId);
 	
-	public void deleteItemsInCustomerCart(int customerId);
+	public void deleteItemsInCustomerCart(String customerId);
+	
+	public Order getCurrentEmployeesLastOrder(int employeeId);
 }

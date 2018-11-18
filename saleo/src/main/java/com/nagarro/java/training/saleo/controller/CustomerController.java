@@ -30,14 +30,16 @@ public class CustomerController {
 		
 	}
 	
-	@GetMapping("/customers/{customerId}")
-	public Customer getSingleCustomer(@RequestHeader(TOKEN) String authToken, @PathVariable int customerId) {
+	@GetMapping("/customers/{customerProperty}")
+	public List<Customer> searchCustomer(@RequestHeader(TOKEN) String authToken, 
+										@PathVariable String customerProperty) {
 		
-		return customerService.getSingleCustomer(authToken, customerId);
+		return customerService.searchCustomer(authToken, customerProperty);
 	}
 	
 	@PostMapping("/customers")
-	public Customer addNewCustomer(@RequestHeader(TOKEN) String authToken, @RequestBody Customer newCustomer) {
+	public Customer addNewCustomer(@RequestHeader(TOKEN) String authToken,
+										@RequestBody Customer newCustomer) {
 		
 		return customerService.addNewCustomer(authToken, newCustomer);
 	
@@ -45,7 +47,8 @@ public class CustomerController {
 	
 	@PutMapping("/customers/{customerId}")
 	public Customer updateCustomer(@RequestHeader(TOKEN) String authToken, 
-									@RequestBody Customer updatedCustomer, @PathVariable int customerId) {
+									@RequestBody Customer updatedCustomer, 
+									@PathVariable String customerId) {
 		
 		return customerService.updateCustomer(authToken, updatedCustomer, customerId);
 	}

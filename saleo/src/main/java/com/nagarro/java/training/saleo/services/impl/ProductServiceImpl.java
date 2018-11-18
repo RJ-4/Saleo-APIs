@@ -36,13 +36,13 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	@Transactional
-	public Product getSingleProduct(String authToken, int productId) {
+	public List<Product> getSearchedProducts(String authToken, String productProperty) {
 
 		auth.checkUserAuthorization(authToken);
 		
-		Product fetchedProduct = productDAO.getSingleProduct(productId);
+		List<Product> fetchedProduct = productDAO.getSearchedProducts(productProperty);
 		
-		if(fetchedProduct == null) {
+		if(fetchedProduct.size() == 0) {
 			
 			throw new ProductNotFoundException(PRODUCT_NOT_FOUND_EXCEPTION_MESSAGE);
 		
@@ -59,13 +59,17 @@ public class ProductServiceImpl implements ProductService {
 
 		auth.checkUserAuthorization(authToken);
 		
+		String newProductCode = generateProductCodeForNewProduct();
+		
+		newProduct.setProductCode(newProductCode);
+		
 		return productDAO.addNewProduct(newProduct);
 	
 	}
 
 	@Override
 	@Transactional
-	public Product updateProduct(String authToken, Product updatedProduct, int productCode) {
+	public Product updateProduct(String authToken, Product updatedProduct, String productProperty) {
 
 		auth.checkUserAuthorization(authToken);
 
@@ -73,9 +77,9 @@ public class ProductServiceImpl implements ProductService {
 		
 		try{
 		
-			updatedExistingProduct = productDAO.updateProduct(updatedProduct, productCode);
+			updatedExistingProduct = productDAO.updateProduct(updatedProduct, productProperty);
 		
-			updatedExistingProduct.setProductCode(productCode);
+//			updatedExistingProduct.setProductCode(productProperty);
 			
 			return updatedExistingProduct;
 		
@@ -87,7 +91,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	@Transactional
-	public void updateProductStock(String authToken, Order newOrder, int productCode) {
+	public void updateProductStock(String authToken, Order newOrder, String productCode) {
 
 		auth.checkUserAuthorization(authToken);
 
@@ -101,5 +105,16 @@ public class ProductServiceImpl implements ProductService {
 
 			throw new ProductNotFoundException(PRODUCT_NOT_FOUND_EXCEPTION_MESSAGE);
 		}
+	}
+
+	public String generateProductCodeForNewProduct() {
+		
+		String lastProductCode = productDAO.getLatestProductCode();
+		
+		int lastProductCodeNumber = Integer.parseInt(lastProductCode);
+		
+		int newProductCode = lastProductCodeNumber + 1;
+		
+		return "" + newProductCode;
 	}
 }

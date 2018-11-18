@@ -30,10 +30,11 @@ public class ProductController {
 		return productService.getAllProducts(authToken);
 	}
 	
-	@GetMapping("/products/{productCode}")
-	public Product getSingleProduct(@RequestHeader(TOKEN) String authToken, @PathVariable int productCode) {
+	@GetMapping("/products/{productProperty}")
+	public List<Product> getSearchedProducts(@RequestHeader(TOKEN) String authToken, 
+										@PathVariable String productProperty) {
 		
-		return productService.getSingleProduct(authToken, productCode);
+		return productService.getSearchedProducts(authToken, productProperty);
 	}
 	
 	@PostMapping("/products") 
@@ -42,10 +43,11 @@ public class ProductController {
 		return productService.addNewProduct(authToken, newProduct);
 	}
 	
-	@PutMapping("/products/{productCode}")
+	@PutMapping("/products/{productProperty}")
 	public Product updateProduct(@RequestHeader(TOKEN) String authToken, 
-									@RequestBody Product updatedProduct, @PathVariable int productCode) {
+									@RequestBody Product updatedProduct, 
+									@PathVariable String productProperty) {
 		
-		return productService.updateProduct(authToken, updatedProduct, productCode);
+		return productService.updateProduct(authToken, updatedProduct, productProperty);
 	}
 }

@@ -24,7 +24,7 @@ public class OrderDAOImpl implements OrderDAO {
 	SessionFactory factory;
 	
 	@Override
-	public Order addNewOrderInCart(Order newOrder, int employeeId, int customerId, int productCode) {
+	public Order addNewOrderInCart(Order newOrder, int employeeId, String customerId, String productCode) {
 
 		Session session = factory.getCurrentSession();
 		
@@ -89,8 +89,8 @@ public class OrderDAOImpl implements OrderDAO {
 	}
 
 	@Override
-	public Order saveOrPlaceOrder(Order updatedOrder, int employeeId, int customerId, int productCode, 
-									int orderId) {
+	public Order saveOrPlaceOrder(Order updatedOrder, int employeeId, String customerId,
+									String productCode, int orderId) {
 		
 		Session session = factory.getCurrentSession();
 		
@@ -115,7 +115,7 @@ public class OrderDAOImpl implements OrderDAO {
 	}
 
 	@Override
-	public void deleteItemsInCustomerCart(int customerId) {
+	public void deleteItemsInCustomerCart(String customerId) {
 
 		Session session = factory.getCurrentSession();
 		
@@ -129,5 +129,24 @@ public class OrderDAOImpl implements OrderDAO {
 		query.setParameter("customer", currentCustomer);
 		
 		query.executeUpdate();
+	}
+
+	@Override
+	public Order getCurrentEmployeesLastOrder(int employeeId) {
+		
+		Session session = factory.getCurrentSession();
+		
+		Employee currentEmployee = session.get(Employee.class, employeeId);
+		
+		String getCurrentEmployeesLastOrderQuery = GET_SELECTED_EMPLOYEES_LAST_ORDER_QUERY;
+		
+		@SuppressWarnings("rawtypes")
+		Query query = session.createQuery(getCurrentEmployeesLastOrderQuery);
+		
+		query.setParameter(GET_SELECTED_EMPLOYEES_LAST_ORDER_QUERY_EMPLOYEE_ID_PARAM, currentEmployee);
+		
+		Order lastOrderOfCurrentEmployee = (Order) query.getSingleResult();
+		
+		return lastOrderOfCurrentEmployee;
 	}
 }

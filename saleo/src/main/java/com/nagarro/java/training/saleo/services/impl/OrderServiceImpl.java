@@ -31,7 +31,8 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Override
 	@Transactional
-	public Order addNewOrderInCart(String authToken, int employeeId, int customerId, int productCode) {
+	public Order addNewOrderInCart(String authToken, int employeeId, String customerId, 
+										String productCode) {
 
 		auth.checkUserAuthorization(authToken);
 
@@ -64,8 +65,8 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	@Transactional
-	public Order saveOrPlaceOrder(String authToken, Order updatedOrder, int employeeId, int customerId, 
-									int productCode, int orderId) {
+	public Order saveOrPlaceOrder(String authToken, Order updatedOrder, int employeeId, String customerId, 
+									String productCode, int orderId) {
 		
 		auth.checkUserAuthorization(authToken);
 		
@@ -84,10 +85,19 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	@Transactional
-	public void emptyCustomerCart(String authToken, int customerId) {
+	public void emptyCustomerCart(String authToken, String customerId) {
 		
 		auth.checkUserAuthorization(authToken);
 		
 		orderDAO.deleteItemsInCustomerCart(customerId);
+	}
+
+	@Override
+	@Transactional
+	public Order getCurrentEmployeesLastOrder(String authToken, int employeeId) {
+	
+		auth.checkUserAuthorization(authToken);
+		
+		return orderDAO.getCurrentEmployeesLastOrder(employeeId);
 	}
 }

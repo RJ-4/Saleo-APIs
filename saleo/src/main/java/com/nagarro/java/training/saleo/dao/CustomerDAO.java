@@ -8,10 +8,12 @@ public interface CustomerDAO {
 
 	public List<Customer> getAllCustomers();
 	
-	public Customer getCustomer(int customerId) throws Exception;
+	public  List<Customer> searchCustomer(String cutomerProperty) throws Exception;
 	
 	public Customer saveCustomer(Customer newCustomer);
 	
-	public Customer updateCustomer(Customer updatedCustomer, int customerId);
+	public Customer updateCustomer(Customer updatedCustomer, String customerId);
+	
+	public String getLatestCustomerId();
 	
 }

@@ -8,9 +8,11 @@ public interface CustomerService {
 
 	public List<Customer> getAllCustomers(String authToken);
 	
-	public Customer getSingleCustomer(String authToken, int customerId);
+	public List<Customer> searchCustomer(String authToken, String cutomerProperty);
 	
 	public Customer addNewCustomer(String authToken, Customer newCustomer);
 	
-	public Customer updateCustomer(String authToken, Customer updatedCustomer, int customerId);
+	public Customer updateCustomer(String authToken, Customer updatedCustomer, String customerId);
+	
+	public String generateCustomerIdForNewCustomer();
 }

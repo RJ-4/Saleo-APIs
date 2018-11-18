@@ -6,8 +6,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,9 +19,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Product {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "product_code")
-	private Integer productCode;
+	private String productCode;
 	
 	@Column(name = "product_name")
 	private String productName;
@@ -69,11 +66,11 @@ public class Product {
 				+ ", productPrice=" + productUnitPrice + ", productDescription=" + productDescription + "]";
 	}
 
-	public Integer getProductCode() {
+	public String getProductCode() {
 		return productCode;
 	}
 
-	public void setProductCode(Integer productCode) {
+	public void setProductCode(String productCode) {
 		this.productCode = productCode;
 	}
 

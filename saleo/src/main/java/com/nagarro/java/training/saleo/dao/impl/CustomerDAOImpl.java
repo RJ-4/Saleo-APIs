@@ -36,22 +36,21 @@ public class CustomerDAOImpl implements CustomerDAO {
 	}
 
 	@Override
-	public Customer getCustomer(int customerId) throws Exception {
+	public List<Customer> searchCustomer(String cutomerProperty) throws Exception {
 
 		Session session = factory.getCurrentSession();
 		
-		String getSingleCustomerQuery = GET_SINGLE_CUSTOMER_QUERY;
+		String searchCustomerQuery = SEARCH_CUSTOMER_QUERY;
 		
 		@SuppressWarnings("rawtypes")
-		Query query = session.createQuery(getSingleCustomerQuery);
+		Query query = session.createQuery(searchCustomerQuery);
 		
-		query.setParameter("customerId", customerId);
+		query.setParameter(CUSTOMER_SEARCH_PROPERTY, cutomerProperty);
 		
-		Customer singleCustomer = (Customer) query.getSingleResult();
+		@SuppressWarnings("unchecked")
+		List<Customer> foundCustomers = query.getResultList();
 		
-		return singleCustomer;
-		
-	
+		return foundCustomers;
 	}
 
 	@Override
@@ -65,7 +64,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	}
 
 	@Override
-	public Customer updateCustomer(Customer updatedCustomer, int customerId) throws NullPointerException {
+	public Customer updateCustomer(Customer updatedCustomer, String customerId) throws NullPointerException {
 		
 		Session session = factory.getCurrentSession();
 		
@@ -78,6 +77,21 @@ public class CustomerDAOImpl implements CustomerDAO {
 		selectedCustomer.setCustomerEmailId(updatedCustomer.getCustomerEmailId());
 		
 		return selectedCustomer;
+	}
+
+	@Override
+	public String getLatestCustomerId() {
+		
+		Session session = factory.getCurrentSession();
+		
+		String getLatestCustomerIdQuery = GET_LAST_GENERATED_CUSTOMER_ID_QUERY;
+		
+		@SuppressWarnings("rawtypes")
+		Query query = session.createQuery(getLatestCustomerIdQuery);
+		
+		String lastCustomerId = (String) query.getSingleResult();
+		
+		return lastCustomerId;
 	}
 
 }

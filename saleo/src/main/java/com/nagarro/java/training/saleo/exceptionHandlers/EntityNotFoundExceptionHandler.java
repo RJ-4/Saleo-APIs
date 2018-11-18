@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.nagarro.java.training.saleo.errors.ErrorResponse;
+import com.nagarro.java.training.saleo.exceptions.ProductNotFoundException;
 import com.nagarro.java.training.saleo.exceptions.UserNotAuthorizedException;
 
 @ControllerAdvice
@@ -26,7 +27,7 @@ public class EntityNotFoundExceptionHandler {
 	}
 
 	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException e) {
+	public ResponseEntity<ErrorResponse> handleRuntimeException(ProductNotFoundException e) {
 		
 		ErrorResponse errorResponse = new ErrorResponse();
 		

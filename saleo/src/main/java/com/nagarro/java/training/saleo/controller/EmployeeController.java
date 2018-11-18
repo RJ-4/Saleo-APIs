@@ -44,7 +44,8 @@ public class EmployeeController {
 	
 	
 	@GetMapping("/employees/{employeeId}")
-	public Employee getEmployeeById(@RequestHeader(TOKEN) String authToken, @PathVariable Integer employeeId) {
+	public Employee getEmployeeById(@RequestHeader(TOKEN) String authToken, 
+										@PathVariable Integer employeeId) {
 		
 		return employeeService.getCurrentEmployee(authToken, employeeId);
 	}
@@ -59,7 +60,7 @@ public class EmployeeController {
 	
 	@PostMapping("employees/{employeeId}/customers/{customerId}/products/{productCode}/orders")
 	public Order addOrderInCart(@RequestHeader(TOKEN) String authToken, @PathVariable int employeeId, 
-									@PathVariable int customerId, @PathVariable int productCode) {
+									@PathVariable String customerId, @PathVariable String productCode) {
 		
 		return orderService.addNewOrderInCart(authToken, employeeId, customerId, productCode);
 	}
@@ -69,8 +70,8 @@ public class EmployeeController {
 	public Order saveOrPlaceOrder(@RequestHeader(TOKEN) String authToken, 
 									@RequestBody Order updatedOrder, 
 									@PathVariable int employeeId, 
-									@PathVariable int customerId, 
-									@PathVariable int productCode, 
+									@PathVariable String customerId, 
+									@PathVariable String productCode, 
 									@PathVariable int orderId){
 		
 		return orderService.saveOrPlaceOrder(authToken, updatedOrder, employeeId, customerId, productCode, orderId);
@@ -95,8 +96,15 @@ public class EmployeeController {
 	
 	@DeleteMapping("/employees/{employeeId}/customers/{customerId}/orders")
 	public void emptyCustomerCart(@RequestHeader(TOKEN) String authToken, 
-										@PathVariable int employeeId, @PathVariable int customerId) {
+										@PathVariable int employeeId, @PathVariable String customerId) {
 		
 		orderService.emptyCustomerCart(authToken, customerId);
+	}
+	
+	@GetMapping("/employees/{employeeId}/orders/last-order")
+	public Order getCurrentEmployeesLastOrder(@RequestHeader(TOKEN) String authToken, 
+												@PathVariable int employeeId) {
+		
+		return orderService.getCurrentEmployeesLastOrder(authToken, employeeId);
 	}
 }

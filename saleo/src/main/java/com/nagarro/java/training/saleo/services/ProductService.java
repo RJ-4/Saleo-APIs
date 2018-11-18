@@ -9,11 +9,13 @@ public interface ProductService {
 
 	public List<Product> getAllProducts(String authToken);
 	
-	public Product getSingleProduct(String authToken, int productId);
+	public List<Product> getSearchedProducts(String authToken, String productProperty);
 	
 	public Product addNewProduct(String authToken, Product newProduct);
 	
-	public Product updateProduct(String authToken, Product updatedProduct, int productCode);
+	public Product updateProduct(String authToken, Product updatedProduct, String productProperty);
 	
-	public void updateProductStock(String authToken, Order newOrder, int productCode);
+	public void updateProductStock(String authToken, Order newOrder, String productCode);
+	
+	public String generateProductCodeForNewProduct();
 }

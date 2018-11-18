@@ -8,11 +8,13 @@ public interface ProductDAO {
 
 	public List<Product> getAllProducts();
 	
-	public Product getSingleProduct(int productId);
+	public List<Product> getSearchedProducts(String productProperty);
 	
 	public Product addNewProduct(Product newProduct);
 	
-	public Product updateProduct(Product updatedProduct, int productCode);
+	public Product updateProduct(Product updatedProduct, String productProperty);
 	
-	public void updateProductStock(int orderedItemQuantity, int productCode);
+	public void updateProductStock(int orderedItemQuantity, String productCode);
+	
+	public String getLatestProductCode();
 }
