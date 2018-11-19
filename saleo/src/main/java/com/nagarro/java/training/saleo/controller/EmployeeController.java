@@ -107,4 +107,11 @@ public class EmployeeController {
 		
 		return orderService.getCurrentEmployeesLastOrder(authToken, employeeId);
 	}
+	
+	@GetMapping("/employees/{employeeId}/total-orders-today")
+	public long getTotalOrdersPlacedTodayByCurrentEmployee(@PathVariable int employeeId, 
+															@RequestHeader(TOKEN) String authToken) {
+		
+		return orderService.getTotalOrdersPlacedTodayByCurrentEmployee(employeeId, authToken);
+	}
 }

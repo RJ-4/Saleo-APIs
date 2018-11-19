@@ -18,4 +18,6 @@ public interface OrderDAO {
 	public void deleteItemsInCustomerCart(String customerId);
 	
 	public Order getCurrentEmployeesLastOrder(int employeeId);
+	
+	public long getTotalOrdersPlacedTodayByCurrentEmployee(int employeeId);
 }

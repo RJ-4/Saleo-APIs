@@ -117,4 +117,13 @@ public class ProductServiceImpl implements ProductService {
 		
 		return "" + newProductCode;
 	}
+
+	@Override
+	@Transactional
+	public List<Product> getLowStockProducts(String authToken) {
+	
+		auth.checkUserAuthorization(authToken);
+		
+		return productDAO.getLowStockProducts();
+	}
 }

@@ -100,4 +100,13 @@ public class OrderServiceImpl implements OrderService {
 		
 		return orderDAO.getCurrentEmployeesLastOrder(employeeId);
 	}
+
+	@Override
+	@Transactional
+	public long getTotalOrdersPlacedTodayByCurrentEmployee(int employeeId, String authToken) {
+
+		auth.checkUserAuthorization(authToken);
+	
+		return orderDAO.getTotalOrdersPlacedTodayByCurrentEmployee(employeeId);
+	}
 }

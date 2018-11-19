@@ -143,10 +143,31 @@ public class OrderDAOImpl implements OrderDAO {
 		@SuppressWarnings("rawtypes")
 		Query query = session.createQuery(getCurrentEmployeesLastOrderQuery);
 		
-		query.setParameter(GET_SELECTED_EMPLOYEES_LAST_ORDER_QUERY_EMPLOYEE_ID_PARAM, currentEmployee);
+		query.setParameter(EMPLOYEE_PARAM, currentEmployee);
 		
 		Order lastOrderOfCurrentEmployee = (Order) query.getSingleResult();
 		
 		return lastOrderOfCurrentEmployee;
+	}
+
+	@Override
+	public long getTotalOrdersPlacedTodayByCurrentEmployee(int employeeId) {
+		
+		Session session = factory.getCurrentSession();
+
+		Employee currentEmployee = session.get(Employee.class, employeeId);
+		
+		String getTotalOrdersPlacedTodayQuery = GET_TOTAL_ORDERS_PLACED_TODAY_QUERY;
+		
+		@SuppressWarnings("rawtypes")
+		Query query = session.createQuery(getTotalOrdersPlacedTodayQuery);
+		
+		query.setParameter(EMPLOYEE_PARAM, currentEmployee);
+		
+		query.setParameter(ORDER_DATE_PARAM, LocalDate.now());
+		
+		long totalOrdersPlacedToday = (Long) query.getSingleResult();
+		
+		return totalOrdersPlacedToday;
 	}
 }

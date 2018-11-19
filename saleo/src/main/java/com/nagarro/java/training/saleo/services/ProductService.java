@@ -18,4 +18,6 @@ public interface ProductService {
 	public void updateProductStock(String authToken, Order newOrder, String productCode);
 	
 	public String generateProductCodeForNewProduct();
+	
+	public List<Product> getLowStockProducts(String authToken);
 }

@@ -114,4 +114,20 @@ public class ProductDAOImpl implements ProductDAO {
 		return latestProductCode;
 	}
 
+	@Override
+	public List<Product> getLowStockProducts() {
+		
+		Session session = factory.getCurrentSession();
+		
+		String getLowStockProductsQuery = GET_LOW_STOCK_PRODUCTS_QUERY;
+		
+		@SuppressWarnings("rawtypes")
+		Query query = session.createQuery(getLowStockProductsQuery);
+		
+		@SuppressWarnings("unchecked")
+		List<Product> lowStockProducts = query.getResultList();
+		
+		return lowStockProducts;
+	}
+
 }

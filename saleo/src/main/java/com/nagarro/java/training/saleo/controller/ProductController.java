@@ -50,4 +50,10 @@ public class ProductController {
 		
 		return productService.updateProduct(authToken, updatedProduct, productProperty);
 	}
+	
+	@GetMapping("/products/low-stock")
+	public List<Product> getLowStockProducts(@RequestHeader(TOKEN) String authToken) {
+		
+		return productService.getLowStockProducts(authToken);
+	}
 }

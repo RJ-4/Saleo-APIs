@@ -18,4 +18,6 @@ public interface OrderService {
 	public void emptyCustomerCart(String authToken, String customerId);
 	
 	public Order getCurrentEmployeesLastOrder(String authToken, int employeeId);
+	
+	public long getTotalOrdersPlacedTodayByCurrentEmployee(int employeeId, String authToken);
 }

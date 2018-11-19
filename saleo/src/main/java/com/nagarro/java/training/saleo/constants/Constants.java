@@ -53,6 +53,10 @@ public class Constants {
 	
 	public static final int TAX_ON_PRODUCT = 10;
 	
+	public static final String ORDER_STATUS_COMPLETED = "Completed";
+	
+	public static final String ORDER_STATUS_SAVED_FOR_LATER = "Saved for later";
+	
 	public static final String PRODUCT_SEARCH_PROPERTY = "productProperty";
 	
 	public static final String GET_SINGLE_PRODUCT_QUERY = "FROM Product WHERE "
@@ -74,11 +78,24 @@ public class Constants {
 	public static final String GET_LAST_GENERATED_CUSTOMER_ID_QUERY = "SELECT MAX(customerId) "
 																		+ "FROM Customer";
 	
-	public static final String GET_SELECTED_EMPLOYEES_LAST_ORDER_QUERY_EMPLOYEE_ID_PARAM = "employee";
+	public static final String EMPLOYEE_PARAM = "employee";
 	
 	public static final String GET_SELECTED_EMPLOYEES_LAST_ORDER_QUERY = "FROM Order WHERE orderId = "
 																		+ "(SELECT MAX(orderId) FROM Order"
 																		+ " WHERE " 
-																		+ GET_SELECTED_EMPLOYEES_LAST_ORDER_QUERY_EMPLOYEE_ID_PARAM
-																		+ "= :employee)";
+																		+ EMPLOYEE_PARAM
+																		+ "= :employee AND orderStatus "
+																		+ "IN ('Completed', 'Saved for later'))";
+
+	public static final String GET_LOW_STOCK_PRODUCTS_QUERY = "FROM Product WHERE productStock < 10";
+	
+	public static final String ORDER_DATE_PARAM = "orderDate";
+	
+	public static final String GET_TOTAL_ORDERS_PLACED_TODAY_QUERY = "SELECT COUNT(orderId) FROM Order"
+																	+ " WHERE orderDate = :" 
+																	+ ORDER_DATE_PARAM +" AND"
+																	+ " orderStatus IN ('Completed', 'Saved for Later') "
+																	+ "AND " + "employee = :" 
+																	+ EMPLOYEE_PARAM;
+	
 }

@@ -17,4 +17,6 @@ public interface ProductDAO {
 	public void updateProductStock(int orderedItemQuantity, String productCode);
 	
 	public String getLatestProductCode();
+	
+	public List<Product> getLowStockProducts();
 }
