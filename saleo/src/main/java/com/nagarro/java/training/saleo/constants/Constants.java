@@ -25,7 +25,7 @@ public class Constants {
 	public static final String GET_ALL_PRODUCTS_QUERY = "FROM Product";
 	
 	public static final String GET_CURRENT_EMPLOYEE_ORDERS_QUERY = "FROM Order WHERE employee = :employee "
-																	+ "AND modeOfPayment != null "
+																	+ "AND orderStatus != null "
 																	+ "ORDER BY orderDate DESC, "
 																	+ "orderTime DESC";
 
