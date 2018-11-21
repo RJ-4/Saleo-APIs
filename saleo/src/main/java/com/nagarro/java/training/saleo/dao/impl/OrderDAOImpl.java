@@ -1,16 +1,6 @@
 package com.nagarro.java.training.saleo.dao.impl;
 
-import static com.nagarro.java.training.saleo.constants.Constants.CUSTOMER_PARAM;
-import static com.nagarro.java.training.saleo.constants.Constants.DELETE_PRODUCTS_IN_CART_QUERY;
-import static com.nagarro.java.training.saleo.constants.Constants.DELETE_PRODUCT_FROM_CART_QUERY;
-import static com.nagarro.java.training.saleo.constants.Constants.EMPLOYEE_PARAM;
-import static com.nagarro.java.training.saleo.constants.Constants.GET_CURRENT_EMPLOYEE_ORDERS_QUERY;
-import static com.nagarro.java.training.saleo.constants.Constants.GET_CURRENT_EMPLOYEE_SELECTED_ORDER_QUERY;
-import static com.nagarro.java.training.saleo.constants.Constants.GET_ORDERS_IN_CUSTOMERS_CART_QUERY;
-import static com.nagarro.java.training.saleo.constants.Constants.GET_SELECTED_EMPLOYEES_LAST_ORDER_QUERY;
-import static com.nagarro.java.training.saleo.constants.Constants.GET_TOTAL_ORDERS_PLACED_TODAY_QUERY;
-import static com.nagarro.java.training.saleo.constants.Constants.ORDER_DATE_PARAM;
-import static com.nagarro.java.training.saleo.constants.Constants.ORDER_ID_PARAM;
+import static com.nagarro.java.training.saleo.constants.Constants.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -115,7 +105,7 @@ public class OrderDAOImpl implements OrderDAO {
 		
 		currentOrder.setProductQuantity(updatedOrder.getProductQuantity());
 		
-		currentOrder.setProductCost(currentOrder.getProductCost() * updatedOrder.getProductQuantity());
+		currentOrder.setProductCost(currentOrder.getProductCost());
 		
 		if(updatedOrder.getOrderStatus().equalsIgnoreCase("Completed")) {
 			
@@ -244,5 +234,42 @@ public class OrderDAOImpl implements OrderDAO {
 		
 		return checkedOutOrders;
 		
+	}
+
+	@Override
+	public void deleteSavedForLaterOrder(int orderId) {
+
+		Session session = factory.getCurrentSession();
+		
+		String deleteSavedForLaterOrderQuery = DELETE_FOR_SAVED_LATER_ORDER_QUERY;
+		
+		@SuppressWarnings("rawtypes")
+		Query query = session.createQuery(deleteSavedForLaterOrderQuery);
+		
+		query.setParameter(ORDER_ID_PARAM, orderId);
+		
+		query.executeUpdate();
+	}
+
+	@Override
+	public List<Order> getCashOrdersForLoggedInEmployee(int employeeId) {
+		
+		Session session = factory.getCurrentSession();
+		
+		Employee currentEmployee = session.get(Employee.class, employeeId);
+		
+		String getCashOrdersForSelectedEmployee = GET_CASH_ORDERS_FOR_LOGGED_IN_EMPLOYEE;
+		
+		@SuppressWarnings("rawtypes")
+		Query query = session.createQuery(getCashOrdersForSelectedEmployee);
+		
+		query.setParameter(EMPLOYEE_PARAM, currentEmployee);
+		
+		query.setParameter(ORDER_DATE_PARAM, LocalDate.now());
+		
+		@SuppressWarnings("unchecked")
+		List<Order> cashOrders = query.getResultList();
+		
+		return cashOrders;
 	}
 }

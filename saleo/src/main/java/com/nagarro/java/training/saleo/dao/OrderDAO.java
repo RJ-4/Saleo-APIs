@@ -27,4 +27,8 @@ public interface OrderDAO {
 	
 	public List<Order> updateProductQuantityInCartAndProceedToCheckout(String customerId,
 																	List<Order> updatedOrders);
+	
+	public void deleteSavedForLaterOrder(int orderId);
+	
+	public List<Order> getCashOrdersForLoggedInEmployee(int employeeId);
 }

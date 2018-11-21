@@ -88,6 +88,15 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	@Transactional
+	public void deleteSavedForLaterOrder(String authToken, int orderId) {
+		
+		auth.checkUserAuthorization(authToken);
+		
+		orderDAO.deleteSavedForLaterOrder(orderId);
+	}
+	
+	@Override
+	@Transactional
 	public void emptyCustomerCart(String authToken, String customerId) {
 		
 		auth.checkUserAuthorization(authToken);
@@ -146,5 +155,15 @@ public class OrderServiceImpl implements OrderService {
 		
 		return orderDAO.updateProductQuantityInCartAndProceedToCheckout(customerId, 
 																		updatedOrders);
+	}
+
+	
+	@Override
+	@Transactional
+	public List<Order> getCashOrdersForLoggedInEmployee(String authToken, int employeeId) {
+
+		auth.checkUserAuthorization(authToken);
+		
+		return orderDAO.getCashOrdersForLoggedInEmployee(employeeId);
 	}
 }

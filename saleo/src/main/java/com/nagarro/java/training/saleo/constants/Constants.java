@@ -54,7 +54,7 @@ public class Constants {
 	
 	public static final String ORDER_STATUS_COMPLETED = "Completed";
 	
-	public static final String ORDER_STATUS_SAVED_FOR_LATER = "Saved for later";
+	public static final String ORDER_STATUS_SAVED_FOR_LATER = "Saved for Later";
 	
 	public static final String PRODUCT_SEARCH_PROPERTY = "productProperty";
 	
@@ -100,7 +100,7 @@ public class Constants {
 	public static final String CUSTOMER_PARAM = "customer";
 	
 	public static final String GET_ORDERS_IN_CUSTOMERS_CART_QUERY = "FROM Order WHERE customer = :" + CUSTOMER_PARAM
-																	+ " AND modeOfPayment = null";
+																	+ " AND orderStatus = null";
 	
 	public static final String ORDER_ID_PARAM = "orderId";
 	
@@ -112,4 +112,13 @@ public class Constants {
 	
 	public static final String CASH = "Cash";
 	
+	public static final String DELETE_FOR_SAVED_LATER_ORDER_QUERY = "DELETE FROM Order WHERE orderId = :"
+																	+ ORDER_ID_PARAM + " AND " 
+																	+ "orderStatus = 'Saved for Later'";
+	
+	public static final String GET_CASH_ORDERS_FOR_LOGGED_IN_EMPLOYEE = "FROM Order WHERE employee = :"
+																		+ EMPLOYEE_PARAM + " AND "
+																		+ "modeOfPayment = 'Cash' AND "
+																		+ "orderDate = :" + ORDER_DATE_PARAM
+																		+ " ORDER BY orderTime DESC";
 }

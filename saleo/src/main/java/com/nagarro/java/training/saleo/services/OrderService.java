@@ -27,4 +27,8 @@ public interface OrderService {
 	
 	public List<Order> updateProductQuantityInCartAndProceedToCheckout(String authToken, String customerId, 
 																	List<Order> updatedOrders);
+	
+	public void deleteSavedForLaterOrder(String authToken, int orderId);
+	
+	public List<Order> getCashOrdersForLoggedInEmployee(String authToken, int employeeId);
 }

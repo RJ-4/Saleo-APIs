@@ -115,4 +115,11 @@ public class EmployeeController {
 		
 		return orderService.getTotalOrdersPlacedTodayByCurrentEmployee(employeeId, authToken);
 	}
+	
+	@GetMapping("/employees/{employeeId}/orders/cash")
+	public List<Order> getCashOrdersForLoggedInEmployee(@RequestHeader(TOKEN) String authToken,
+														@PathVariable int employeeId) {
+		
+		return orderService.getCashOrdersForLoggedInEmployee(authToken, employeeId);
+	}
 }
