@@ -26,7 +26,7 @@ public class EntityNotFoundExceptionHandler {
 	}
 
 	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleRuntimeException(ClassCastException e) {
+	public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException e) {
 		
 		ErrorResponse errorResponse = new ErrorResponse();
 		
