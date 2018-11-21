@@ -45,7 +45,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		@SuppressWarnings("rawtypes")
 		Query query = session.createQuery(searchCustomerQuery);
 		
-		query.setParameter(CUSTOMER_SEARCH_PROPERTY, cutomerProperty);
+		query.setParameter(CUSTOMER_SEARCH_PROPERTY, "%" + cutomerProperty + "%");
 		
 		@SuppressWarnings("unchecked")
 		List<Customer> foundCustomers = query.getResultList();

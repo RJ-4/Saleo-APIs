@@ -104,4 +104,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 		employeeDAO.setCashDrawerAmountAtLogin(currentEmployeeId, startingAmountAtLogin);
 	}
+
+	@Override
+	@Transactional
+	public Employee updateEmployee(String authToken, int employeeId, Employee updatedEmployee) {
+
+		auth.checkUserAuthorization(authToken);
+		
+		return employeeDAO.updateEmployee(employeeId, updatedEmployee);
+	}
 }

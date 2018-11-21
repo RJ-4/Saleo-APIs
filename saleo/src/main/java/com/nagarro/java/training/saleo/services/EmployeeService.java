@@ -18,4 +18,6 @@ public interface EmployeeService {
 	public Employee authenticateEmployeeLogin(Employee currentEmployee);
 	
 	public void setCashDrawerAtLogin(int currentEmployeeId, double startingAmountAtLogin);
+	
+	public Employee updateEmployee(String authToken, int employeeId, Employee updatedEmployee);
 }

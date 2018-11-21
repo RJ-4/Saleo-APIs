@@ -20,4 +20,11 @@ public interface OrderService {
 	public Order getCurrentEmployeesLastOrder(String authToken, int employeeId);
 	
 	public long getTotalOrdersPlacedTodayByCurrentEmployee(int employeeId, String authToken);
+	
+	public List<Order> getOrdersInCustomersCart(String authToken, String customerId);
+	
+	public void deleteProductFromCart(String authToken, String customerId, int orderId);
+	
+	public List<Order> updateProductQuantityInCartAndProceedToCheckout(String authToken, String customerId, 
+																	List<Order> updatedOrders);
 }

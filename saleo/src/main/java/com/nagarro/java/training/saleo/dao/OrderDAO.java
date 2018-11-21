@@ -20,4 +20,11 @@ public interface OrderDAO {
 	public Order getCurrentEmployeesLastOrder(int employeeId);
 	
 	public long getTotalOrdersPlacedTodayByCurrentEmployee(int employeeId);
+	
+	public List<Order> getOrdersInCustomersCart(String customerId);
+	
+	public void deleteProductFromCart(String customerId, int orderId);
+	
+	public List<Order> updateProductQuantityInCartAndProceedToCheckout(String customerId,
+																	List<Order> updatedOrders);
 }

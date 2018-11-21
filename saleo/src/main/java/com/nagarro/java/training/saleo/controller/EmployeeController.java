@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,6 +56,14 @@ public class EmployeeController {
 		return employeeService.authenticateEmployeeLogin(currentEmployee);
 	}
 	
+	@PutMapping("/employees/{employeeId}/profile/update")
+	public Employee updateEmployee(@RequestHeader(TOKEN) String authToken,
+									@PathVariable int employeeId,
+									@RequestBody Employee updatedEmployee) {
+		
+		return employeeService.updateEmployee(authToken, employeeId, updatedEmployee);
+	}
+	
 	
 	@PostMapping("employees/{employeeId}/customers/{customerId}/products/{productCode}/orders")
 	public Order addOrderInCart(@RequestHeader(TOKEN) String authToken, @PathVariable int employeeId, 
@@ -93,13 +100,7 @@ public class EmployeeController {
 		
 		return orderService.getCurrentEmployeeSelectedOrder(authToken, employeeId, orderId);
 	}
-	
-	@DeleteMapping("/employees/{employeeId}/customers/{customerId}/orders")
-	public void emptyCustomerCart(@RequestHeader(TOKEN) String authToken, 
-										@PathVariable int employeeId, @PathVariable String customerId) {
-		
-		orderService.emptyCustomerCart(authToken, customerId);
-	}
+
 	
 	@GetMapping("/employees/{employeeId}/orders/last-order")
 	public Order getCurrentEmployeesLastOrder(@RequestHeader(TOKEN) String authToken, 

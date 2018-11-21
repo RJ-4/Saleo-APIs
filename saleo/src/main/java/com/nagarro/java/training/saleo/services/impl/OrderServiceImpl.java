@@ -13,6 +13,7 @@ import com.nagarro.java.training.saleo.services.EmployeeService;
 import com.nagarro.java.training.saleo.services.OrderService;
 import com.nagarro.java.training.saleo.services.ProductService;
 import com.nagarro.java.training.saleo.token.AuthToken;
+import static com.nagarro.java.training.saleo.constants.Constants.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -72,12 +73,14 @@ public class OrderServiceImpl implements OrderService {
 		
 		updatedOrder = orderDAO.saveOrPlaceOrder(updatedOrder, employeeId, customerId, productCode, orderId);
 		
-		if (updatedOrder.getOrderStatus().equalsIgnoreCase("Completed")) {
+		if (updatedOrder.getOrderStatus().equalsIgnoreCase(ORDER_STATUS_COMPLETED)) {
 		
 			productService.updateProductStock(authToken, updatedOrder, productCode);
 			
-			employeeService.updateEmployeeCashDrawer(updatedOrder, employeeId);
+			if(updatedOrder.getModeOfPayment().equalsIgnoreCase(CASH)){
 			
+				employeeService.updateEmployeeCashDrawer(updatedOrder, employeeId);
+			}
 		}
 		
 		return updatedOrder;
@@ -108,5 +111,40 @@ public class OrderServiceImpl implements OrderService {
 		auth.checkUserAuthorization(authToken);
 	
 		return orderDAO.getTotalOrdersPlacedTodayByCurrentEmployee(employeeId);
+	}
+
+	@Override
+	@Transactional
+	public List<Order> getOrdersInCustomersCart(String authToken, String customerId) {
+
+		auth.checkUserAuthorization(authToken);
+		
+		return orderDAO.getOrdersInCustomersCart(customerId);
+	}
+
+	@Override
+	@Transactional
+	public void deleteProductFromCart(String authToken, String customerId, int orderId) {
+
+		auth.checkUserAuthorization(authToken);
+		
+		orderDAO.deleteProductFromCart(customerId, orderId);
+	}
+
+	@Override
+	@Transactional
+	public List<Order> updateProductQuantityInCartAndProceedToCheckout(String authToken, String customerId,  
+																	List<Order> updatedOrders) {
+	
+		auth.checkUserAuthorization(authToken);
+		
+		for(Order updatedOrder: updatedOrders) {
+			
+			updatedOrder.setProductCost(updatedOrder.getProductCost() * updatedOrder.getProductQuantity());
+		
+		}
+		
+		return orderDAO.updateProductQuantityInCartAndProceedToCheckout(customerId, 
+																		updatedOrders);
 	}
 }

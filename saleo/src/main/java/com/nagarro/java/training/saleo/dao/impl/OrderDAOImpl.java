@@ -1,7 +1,19 @@
 package com.nagarro.java.training.saleo.dao.impl;
 
+import static com.nagarro.java.training.saleo.constants.Constants.CUSTOMER_PARAM;
+import static com.nagarro.java.training.saleo.constants.Constants.DELETE_PRODUCTS_IN_CART_QUERY;
+import static com.nagarro.java.training.saleo.constants.Constants.DELETE_PRODUCT_FROM_CART_QUERY;
+import static com.nagarro.java.training.saleo.constants.Constants.EMPLOYEE_PARAM;
+import static com.nagarro.java.training.saleo.constants.Constants.GET_CURRENT_EMPLOYEE_ORDERS_QUERY;
+import static com.nagarro.java.training.saleo.constants.Constants.GET_CURRENT_EMPLOYEE_SELECTED_ORDER_QUERY;
+import static com.nagarro.java.training.saleo.constants.Constants.GET_ORDERS_IN_CUSTOMERS_CART_QUERY;
+import static com.nagarro.java.training.saleo.constants.Constants.GET_SELECTED_EMPLOYEES_LAST_ORDER_QUERY;
+import static com.nagarro.java.training.saleo.constants.Constants.GET_TOTAL_ORDERS_PLACED_TODAY_QUERY;
+import static com.nagarro.java.training.saleo.constants.Constants.ORDER_DATE_PARAM;
+import static com.nagarro.java.training.saleo.constants.Constants.ORDER_ID_PARAM;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -15,7 +27,6 @@ import com.nagarro.java.training.saleo.models.Customer;
 import com.nagarro.java.training.saleo.models.Employee;
 import com.nagarro.java.training.saleo.models.Order;
 import com.nagarro.java.training.saleo.models.Product;
-import static com.nagarro.java.training.saleo.constants.Constants.*;
 
 @Repository
 public class OrderDAOImpl implements OrderDAO {
@@ -169,5 +180,69 @@ public class OrderDAOImpl implements OrderDAO {
 		long totalOrdersPlacedToday = (Long) query.getSingleResult();
 		
 		return totalOrdersPlacedToday;
+	}
+
+	@Override
+	public List<Order> getOrdersInCustomersCart(String customerId) {
+
+		Session session = factory.getCurrentSession();
+		
+		Customer currentCustomer = session.get(Customer.class, customerId);
+		
+		String getOrdersInCustomersCartQuery = GET_ORDERS_IN_CUSTOMERS_CART_QUERY;
+		
+		@SuppressWarnings("rawtypes")
+		Query query = session.createQuery(getOrdersInCustomersCartQuery);
+		
+		query.setParameter(CUSTOMER_PARAM, currentCustomer);
+		
+		@SuppressWarnings("unchecked")
+		List<Order> ordersInCart = query.getResultList();
+		
+		return ordersInCart;
+		
+	}
+
+	@Override
+	public void deleteProductFromCart(String customerId, int orderId) {
+
+		Session session = factory.getCurrentSession();
+		
+		Customer currentCustomer = session.get(Customer.class, customerId);
+		
+		String deleteProductFromCartQuery = DELETE_PRODUCT_FROM_CART_QUERY;
+		
+		@SuppressWarnings("rawtypes")
+		Query query = session.createQuery(deleteProductFromCartQuery);
+		
+		query.setParameter(CUSTOMER_PARAM, currentCustomer);
+		
+		query.setParameter(ORDER_ID_PARAM, orderId);
+		
+		query.executeUpdate();
+	}
+
+	@Override
+	public List<Order> updateProductQuantityInCartAndProceedToCheckout(String customerId,
+																	List<Order> updatedOrders) {
+
+		List<Order> checkedOutOrders = new ArrayList<Order>();
+		
+		Session session = factory.getCurrentSession();
+		
+		for(Order updatedOrder: updatedOrders) {
+		
+			Order currentOrder = session.get(Order.class, updatedOrder.getOrderId());
+			
+			currentOrder.setProductQuantity(updatedOrder.getProductQuantity());
+			
+			currentOrder.setProductCost(updatedOrder.getProductCost());
+			
+			checkedOutOrders.add(currentOrder);
+		
+		}
+		
+		return checkedOutOrders;
+		
 	}
 }

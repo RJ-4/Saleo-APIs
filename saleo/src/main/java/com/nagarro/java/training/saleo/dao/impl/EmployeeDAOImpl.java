@@ -108,4 +108,18 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		currentEmployee.setEmployeeCashDrawer(startingAmountAtLogin);
 	}
 
+	@Override
+	public Employee updateEmployee(int employeeId, Employee updatedEmployee) {
+
+		Session session = factory.getCurrentSession();
+		
+		Employee currentEmployee = session.get(Employee.class, employeeId);
+		
+		currentEmployee.setEmployeeName(updatedEmployee.getEmployeeName());
+		
+		currentEmployee.setEmployeePassword(updatedEmployee.getEmployeePassword());
+		
+		return currentEmployee;
+	}
+
 }

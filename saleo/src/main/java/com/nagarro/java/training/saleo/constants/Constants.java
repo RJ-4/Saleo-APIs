@@ -24,9 +24,8 @@ public class Constants {
 	
 	public static final String GET_ALL_PRODUCTS_QUERY = "FROM Product";
 	
-//	public static final String GET_SINGLE_PRODUCT_QUERY = "FROM Product WHERE productId = :productId";
-	
 	public static final String GET_CURRENT_EMPLOYEE_ORDERS_QUERY = "FROM Order WHERE employee = :employee "
+																	+ "AND modeOfPayment != null "
 																	+ "ORDER BY orderDate DESC, "
 																	+ "orderTime DESC";
 
@@ -60,9 +59,9 @@ public class Constants {
 	public static final String PRODUCT_SEARCH_PROPERTY = "productProperty";
 	
 	public static final String GET_SINGLE_PRODUCT_QUERY = "FROM Product WHERE "
-															+ "productCode = :" + PRODUCT_SEARCH_PROPERTY
-															+ " OR productName = :" + PRODUCT_SEARCH_PROPERTY
-															+ " OR productDescription = :" + PRODUCT_SEARCH_PROPERTY;
+															+ "productCode LIKE :" + PRODUCT_SEARCH_PROPERTY
+															+ " OR productName LIKE :" + PRODUCT_SEARCH_PROPERTY
+															+ " OR productDescription LIKE :" + PRODUCT_SEARCH_PROPERTY;
 
 	public static final String GET_LAST_GENERATED_PRODUCT_CODE_QUERY = "SELECT MAX(productCode)"
 																			+ " FROM Product";
@@ -70,10 +69,10 @@ public class Constants {
 	public static final String CUSTOMER_SEARCH_PROPERTY = "customerProperty";
 	
 	public static final String SEARCH_CUSTOMER_QUERY = "FROM Customer WHERE "
-														+ "customerId = :" + CUSTOMER_SEARCH_PROPERTY
-														+ " OR customerName = :" + CUSTOMER_SEARCH_PROPERTY
-														+ " OR customerMobileNo = :" + CUSTOMER_SEARCH_PROPERTY				
-														+ " OR customerEmailId = :" + CUSTOMER_SEARCH_PROPERTY;
+														+ "customerId LIKE :" + CUSTOMER_SEARCH_PROPERTY
+														+ " OR customerName LIKE :" + CUSTOMER_SEARCH_PROPERTY
+														+ " OR customerMobileNo LIKE :" + CUSTOMER_SEARCH_PROPERTY				
+														+ " OR customerEmailId LIKE :" + CUSTOMER_SEARCH_PROPERTY;
 
 	public static final String GET_LAST_GENERATED_CUSTOMER_ID_QUERY = "SELECT MAX(customerId) "
 																		+ "FROM Customer";
@@ -97,5 +96,20 @@ public class Constants {
 																	+ " orderStatus IN ('Completed', 'Saved for Later') "
 																	+ "AND " + "employee = :" 
 																	+ EMPLOYEE_PARAM;
+	
+	public static final String CUSTOMER_PARAM = "customer";
+	
+	public static final String GET_ORDERS_IN_CUSTOMERS_CART_QUERY = "FROM Order WHERE customer = :" + CUSTOMER_PARAM
+																	+ " AND modeOfPayment = null";
+	
+	public static final String ORDER_ID_PARAM = "orderId";
+	
+	public static final String DELETE_PRODUCT_FROM_CART_QUERY = "DELETE FROM Order WHERE customer = :"
+																+ CUSTOMER_PARAM + " AND orderId = :"
+																+ ORDER_ID_PARAM;
+	
+	public static final String PRODUCT_QUANTITY_PARAM = "productQuantity";
+	
+	public static final String CASH = "Cash";
 	
 }

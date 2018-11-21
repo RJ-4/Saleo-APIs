@@ -38,15 +38,28 @@ public class CustomerServiceImpl implements CustomerService {
 	public List<Customer> searchCustomer(String authToken, String cutomerProperty) {
 
 		auth.checkUserAuthorization(authToken); 
-
+		
+		List<Customer> searchedCustomer = null;
+		
 		try {
 			
-			return customerDAO.searchCustomer(cutomerProperty);
+			searchedCustomer = customerDAO.searchCustomer(cutomerProperty);
+			
+			if(searchedCustomer.size() == 0) {
+
+				throw new CustomerNotFoundException(CUSTOMER_NOT_FOUND_EXCEPTION_MESSAGE);
+			
+			} else {
+				
+				return searchedCustomer;
+			}
 		
 		} catch (Exception e) {
-
+			
 			throw new CustomerNotFoundException(CUSTOMER_NOT_FOUND_EXCEPTION_MESSAGE);
 		}
+
+		
 	}
 
 	@Override

@@ -44,7 +44,7 @@ public class ProductDAOImpl implements ProductDAO {
 		@SuppressWarnings("unchecked")
 		Query<Product> query = session.createQuery(getSingleProductQuery);
 		
-		query.setParameter(PRODUCT_SEARCH_PROPERTY, productProperty);
+		query.setParameter(PRODUCT_SEARCH_PROPERTY, "%" + productProperty + "%");
 		
 		//Product getSingleProduct = session.get(Product.class, productProperty);
 		List<Product> getSearchedProductsList = query.getResultList();
