@@ -95,7 +95,11 @@ public class OrderDAOImpl implements OrderDAO {
 		
 		Session session = factory.getCurrentSession();
 		
+		Employee currentEmployee = session.get(Employee.class, employeeId);
+		
 		Order currentOrder = session.get(Order.class, orderId);
+		
+		currentOrder.setEmployee(currentEmployee);
 		
 		currentOrder.setOrderDate(LocalDate.now());
 		
